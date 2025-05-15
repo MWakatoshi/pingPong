@@ -1,4 +1,6 @@
 const map = document.querySelector("#game");
+const leftCounter = document.querySelector("#leftCounter");
+const rightCounter = document.querySelector("#rightCounter");
 const canvas = map.getContext('2d');
 canvas.fillStyle = 'rgb(228, 164, 87)';
 
@@ -6,14 +8,14 @@ const grid = 15;
 const paddleHeight = grid * 5;
 const maxPaddleY = map.height - grid - paddleHeight;
 
-let ballSpeed = 10;
+let ballSpeed = 5;
 let paddleSpeed = 7;
 
 const leftPaddle = {
     x: grid * 2,
     y: map.height / 2 - paddleHeight / 2,
     width: grid,
-    height: paddleHeight * 3,
+    height: paddleHeight,
     dy: 0,
 }
 
@@ -131,7 +133,34 @@ function aiControl() {
     } else if (ball.y > rightPaddle.y) {
         direction = 1;
     }
-    rightPaddle.y += paddleSpeed * direction;
+    rightPaddle.y += (paddleSpeed - 2) * direction;
+}
+
+function counter() {
+    if (ball.x < leftPaddle.x) {
+        rightCounter.textContent = parseInt(rightCounter.textContent) + 1;
+        ball.isResetted = true;
+        ball.x = map.width / 2;
+        ball.y = map.height / 2;
+        ball.dy = 0;
+        ball.dx = 0;
+        setTimeout(() => {
+            ball.dy = ballSpeed;
+            ball.dx = ballSpeed;
+        }, 1000);       
+    }
+    else if (ball.x > rightPaddle.x) {
+        leftCounter.textContent = parseInt(leftCounter.textContent) + 1;
+        ball.isResetted = true;
+        ball.x = map.width / 2;
+        ball.y = map.height / 2;
+        ball.dy = 0;
+        ball.dx = 0;
+        setTimeout(() => {
+            ball.dy = ballSpeed;
+            ball.dx = ballSpeed;
+        }, 1000);       
+    }
 }
 
 function loop() {
@@ -152,6 +181,8 @@ function loop() {
     collideBallwithPaddles();
 
     resetGame();
+
+    counter();
 
     requestAnimationFrame(loop);
 }
