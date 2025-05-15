@@ -35,6 +35,7 @@ const ball = {
     isResetted: false,
 }
 
+
 function renderLeftPaddle() {
     canvas.fillRect(leftPaddle.x, leftPaddle.y, leftPaddle.width, leftPaddle.height);
 }
@@ -58,6 +59,15 @@ function renderMap() {
     }
 }
 
+function renderBall() {
+    canvas.fillRect(ball.x, ball.y, ball.width, ball.height);
+}
+
+function moveBall() {
+    ball.x += ball.dx;
+    ball.y += ball.dy;
+}
+
 function clearMap() {
     canvas.clearRect(0, 0, map.width, map.height);
 }
@@ -67,27 +77,28 @@ function loop() {
 
     renderLeftPaddle();
     renderRightPaddle();
+    renderBall();
     
     movePaddles();
+    moveBall();
 
     renderMap();
     requestAnimationFrame(loop);
 }
 
+
 addEventListener('keydown', (event) => {
-    if (event.key == "w") {
+    if (event.key == "w" || event.key == "ц") {
         leftPaddle.dy = -paddleSpeed;
-    } else if (event.key == "s") {
+    } else if (event.key == "s" || event.key == "ы") {
         leftPaddle.dy = paddleSpeed;
     }
 })
 
 addEventListener('keyup', (event) => {
-    if (event.key == "w") {
+    if (event.key == "w" || event.key == "ц" || event.key == "s" || event.key == "ы") {
         leftPaddle.dy = 0;
-    } else if (event.key == "s") {
-        leftPaddle.dy = 0;
-    }
+    } 
 })
 
 
